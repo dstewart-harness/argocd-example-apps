@@ -16,14 +16,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: CreatePR
-                  name: Create PR
-                  identifier: createPR
-                  timeout: 10m
-                  spec:
-                    overrideConfig: false
-                    shell: Bash
-              - step:
                   type: HarnessApproval
                   name: Harness Approval
                   identifier: Harness_Approval
