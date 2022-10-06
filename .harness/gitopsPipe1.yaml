@@ -35,8 +35,9 @@ pipeline:
             serviceRef: dstewartsvc
           environment:
             environmentRef: dstewartenv
-            deployToAll: <+input>
-            gitOpsClusters: <+input>
+            deployToAll: false
+            gitOpsClusters:
+              - identifier: dstewartcluster
         tags: {}
         failureStrategies:
           - onFailure:
