@@ -24,6 +24,20 @@ pipeline:
                     overrideConfig: false
                     shell: Bash
               - step:
+                  type: HarnessApproval
+                  name: Harness Approval
+                  identifier: Harness_Approval
+                  spec:
+                    approvalMessage: Please review the following information and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      userGroups:
+                        - account._account_all_users
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                    approverInputs: []
+                  timeout: 1d
+              - step:
                   type: MergePR
                   name: Merge PR
                   identifier: mergePR
