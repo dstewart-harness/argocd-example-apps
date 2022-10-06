@@ -59,3 +59,9 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+  properties:
+    ci:
+      codebase:
+        connectorRef: dstewartgh
+        repoName: argocd-example-apps
+        build: <+input>
