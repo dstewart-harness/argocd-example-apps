@@ -1,0 +1,64 @@
+pipeline:
+  name: gitopsPipe1
+  identifier: gitopsPipe1
+  projectIdentifier: gitops_davids
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: gitOps PR Stuff
+        identifier: gitOps_PR_Stuff
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          gitOpsEnabled: true
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: test
+                  identifier: test
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          echo "Test"
+                          git -v
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+              - step:
+                  type: CreatePR
+                  name: Create PR
+                  identifier: createPR
+                  timeout: 10m
+                  spec:
+                    overrideConfig: false
+                    shell: Bash
+              - step:
+                  type: MergePR
+                  name: Merge PR
+                  identifier: mergePR
+                  spec:
+                    deleteSourceBranch: false
+                  timeout: 10m
+            rollbackSteps: []
+          service:
+            serviceRef: dstewartsvc
+          environment:
+            environmentRef: <+input>
+            deployToAll: <+input>
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            gitOpsClusters: <+input>
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
